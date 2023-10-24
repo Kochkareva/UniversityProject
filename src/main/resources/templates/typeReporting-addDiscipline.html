@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{default}"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+    <div th:text="${errors}" class="margin-bottom alert-danger"></div>
+    <form action="#" th:action="@{/typeReporting/addDiscipline}" th:object="${typeReportingDisciplineDto}" method="post">
+        <div class="mb-3">
+            <label class="form-label" style="margin-top: 1%">Тип отчета</label>
+            <select class="form-control" th:field="${typeReportingDisciplineDto.typeReportingId}">
+                <option th:each="typeReporting, iterator: ${typeReportings}" th:value="${typeReporting.id}" th:text="${typeReporting.ReportNumber} + ' ' + ${typeReporting.ReportName}" />
+            </select>
+            <label class="form-label">Дисциплина</label>
+            <select class="form-control" th:field="${typeReportingDisciplineDto.disciplineId}">
+                <option th:each="discipline, iterator: ${disciplines}" th:value="${discipline.id}" th:text="${discipline.DisciplineName}" />
+            </select>
+
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary button-fixed">Добавить</button>
+            <a class="btn btn-secondary button-fixed" th:href="@{/typeReporting}">Назад</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

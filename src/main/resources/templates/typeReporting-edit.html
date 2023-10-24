@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{default}" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:div="http://www.w3.org/1999/xhtml"
+      xmlns:small="http://www.w3.org/1999/XSL/Transform">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+    <div th:text="${errors}" class="margin-bottom alert-danger"></div>
+    <form action="#" th:action="@{/typeReporting/{id}(id=${id})}" th:object="${typeReportingDto}" method="post">
+        <div class="mb-3">
+            <label for="ReportNumber" class="form-label">Номер отчета</label>
+            <input type="text" class="form-control" id="ReportNumber" th:field="${typeReportingDto.ReportNumber}" required="true">
+        </div>
+        <div class="mb-3">
+            <label for="ReportName" class="form-label">Название отчета</label>
+            <input type="text" class="form-control" id="ReportName" th:field="${typeReportingDto.ReportName}" required="true">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Название кафедры</label>
+            <select class="form-control" th:field="${typeReportingDto.department}">
+                <option th:each="department, iterator: ${departments}" th:text="${department.DepartmentName}"
+                        th:value="${department.id}" required="true"/>
+            </select>
+        </div>
+        <span th:if="${id != null}" style="margin-top: 1%;"> Дисциплины: </span>
+        <div th:if="${id != null}" class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">id</th>
+                    <th scope="col">Название дисциплины</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="discipline, iterator: ${typeReportingDto.disciplines}">
+                    <th scope="row" th:text="${iterator.index} + 1"/>
+                    <td th:text="${discipline.id}"/>
+                    <td th:text="${discipline.DisciplineName}" style="width: 60%"/>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary button-fixed">
+                <span th:if="${id == null}">Добавить</span>
+                <span th:if="${id != null}">Обновить</span>
+            </button>
+            <a class="btn btn-secondary button-fixed" th:href="@{/typeReporting}">
+                Назад
+            </a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

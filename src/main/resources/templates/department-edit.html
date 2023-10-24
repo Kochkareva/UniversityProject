@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{default}" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+    <div th:text="${errors}" class="margin-bottom alert-danger"></div>
+    <form action="#" th:action="@{/department/{id}(id=${id})}" th:object="${departmentDto}" method="post">
+        <div class="mb-3">
+            <label for="DepartmentName" class="form-label">Название кафедры</label>
+            <input type="text" class="form-control" id="DepartmentName" th:field="${departmentDto.DepartmentName}" required="true">
+        </div>
+        <div class="mb-3">
+            <label for="Login" class="form-label">Логин</label>
+            <input type="text" class="form-control" id="Login" th:field="${departmentDto.Login}" required="true">
+        </div>
+        <div class="mb-3">
+            <label for="Password" class="form-label">Пароль</label>
+            <input type="text" class="form-control" id="Password" th:field="${departmentDto.Password}" required="true">
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary button-fixed">
+                <span th:if="${id == null}">Добавить</span>
+                <span th:if="${id != null}">Обновить</span>
+            </button>
+            <a class="btn btn-secondary button-fixed" th:href="@{/department}">
+                Назад
+            </a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

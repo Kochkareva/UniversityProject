@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{default}" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+    <div>
+        <a sec:authorize="hasRole('ROLE_TEACHER') or hasRole('ROLE_ADMIN')" class="btn btn-success button-fixed"
+           th:href="@{/discipline/edit/}">
+            <i class="fa-solid fa-plus"></i> Добавить
+        </a>
+        <a sec:authorize="hasRole('ROLE_TEACHER') or hasRole('ROLE_ADMIN')" class="btn btn-primary button-fixed"
+           th:href="@{/discipline/addTypeReporting/}">
+            <i class="fa-solid fa-plus"></i> Добавить отчеты к дисциплинам
+        </a>
+        <a sec:authorize="hasRole('ROLE_TEACHER') or hasRole('ROLE_ADMIN')" class="btn btn-danger button-fixed"
+           th:href="@{/discipline/removeTypeReporting/}">
+            <i class="fa fa-trash"></i> Удалить отчеты у дисциплин
+        </a>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">id</th>
+                <th scope="col">Название дисциплины</th>
+                <th scope="col">Название кафедры</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="discipline, iterator: ${disciplines}">
+                <th scope="row" th:text="${iterator.index} + 1"/>
+                <td th:text="${discipline.id}"/>
+                <td th:text="${discipline.DisciplineName}" style="width: 60%"/>
+                <td th:text="${discipline.Department.DepartmentName}" style="width: 60%"/>
+                <td style="width: 10%">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a sec:authorize="hasRole('ROLE_TEACHER') or hasRole('ROLE_ADMIN')" class="btn btn-warning button-fixed button-sm"
+                           th:href="@{/discipline/edit/{id}(id=${discipline.id})}">
+                            <i class="fa fa-pencil" aria-hidden="true"></i> Изменить
+                        </a>
+                        <button sec:authorize="hasRole('ROLE_TEACHER') or hasRole('ROLE_ADMIN')" type="button" class="btn btn-danger button-fixed button-sm"
+                                th:attr="onclick=|confirm('Удалить запись?') && document.getElementById('remove-${discipline.id}').click()|">
+                            <i class="fa fa-trash" aria-hidden="true"></i> Удалить
+                        </button>
+                    </div>
+                    <form th:action="@{/discipline/delete/{id}(id=${discipline.id})}" method="post">
+                        <button th:id="'remove-' + ${discipline.id}" type="submit" style="display: none">
+                            Удалить
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

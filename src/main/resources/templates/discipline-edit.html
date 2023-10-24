@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{default}" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+    <div th:text="${errors}" class="margin-bottom alert-danger"></div>
+    <form action="#" th:action="@{/discipline/{id}(id=${id})}" th:object="${disciplineDto}" method="post">
+        <div class="mb-3">
+            <label for="DisciplineName" class="form-label">Название дисциплины</label>
+            <input type="text" class="form-control" id="DisciplineName" th:field="${disciplineDto.DisciplineName}" required="true">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Название кафедры</label>
+            <select class="form-control" th:field="${disciplineDto.department}">
+                <option th:each="department, iterator: ${departments}" th:text="${department.DepartmentName}"
+                        th:value="${department.id}" required="true"/>
+            </select>
+        </div>
+        <span th:if="${id != null}" style="margin-top: 1%;"> Типы отчетов: </span>
+        <div th:if="${id != null}" class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">id</th>
+                    <th scope="col">Номер отчета</th>
+                    <th scope="col">Название отчета</th>
+                    <th scope="col">Название кафедры</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="typeReporting, iterator: ${disciplineDto.typeReportings}">
+                    <th scope="row" th:text="${iterator.index} + 1"/>
+                    <td th:text="${typeReporting.id}"/>
+                    <td th:text="${typeReporting.ReportNumber}"/>
+                    <td th:text="${typeReporting.ReportName}"/>
+                    <td th:text="${typeReporting.Department.DepartmentName}" style="width: 60%"/>
+                    <td style="width: 10%">
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary button-fixed">
+                <span th:if="${id == null}">Добавить</span>
+                <span th:if="${id != null}">Обновить</span>
+            </button>
+            <a class="btn btn-secondary button-fixed" th:href="@{/discipline}">
+                Назад
+            </a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
